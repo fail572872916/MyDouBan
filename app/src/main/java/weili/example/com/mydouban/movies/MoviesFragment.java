@@ -15,12 +15,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -30,11 +27,13 @@ import retrofit2.Response;
 import weili.example.com.mydouban.R;
 import weili.example.com.mydouban.api.DoubanManger;
 import weili.example.com.mydouban.api.IDoubanService;
+import weili.example.com.mydouban.beans.HotMoviesInfo;
+import weili.example.com.mydouban.beans.Movie;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MoviesFragment extends Fragment {
+public class MoviesFragment extends Fragment  implements  MoviesContranct.View{
 
     private static final String TAG = MoviesFragment.class.getSimpleName();
     @BindView(R.id.rec_movies)
@@ -43,6 +42,7 @@ public class MoviesFragment extends Fragment {
     private List<Movie> mMovieList = new ArrayList<>();
     private MoviesAdapter moviesAdapter;
 
+    private  MoviesContranct.Presenter presenter;
     public MoviesFragment() {
         // Required empty public constructor
     }
@@ -59,9 +59,7 @@ public class MoviesFragment extends Fragment {
                 mMovieList = response.body().getMovies();
                 Log.d(TAG, " mMovieList.size():" + mMovieList.size());
                 moviesAdapter.setdata(mMovieList);
-                for (Movie movie : mMovieList) {
-                    Log.d(TAG, movie.getTitle());
-                }
+
             }
 
             @Override
@@ -98,6 +96,26 @@ public class MoviesFragment extends Fragment {
     private void loadMovie(Callback<HotMoviesInfo> callback) {
         IDoubanService doubanService = DoubanManger.createDoubanServerce();
         doubanService.searchHotMovies().enqueue(callback);
+
+    }
+
+    @Override
+    public void setPresenter(MoviesContranct.Presenter presenter) {
+       this.presenter = presenter;
+    }
+
+    @Override
+    public void showmMovies(List<Movie> movies) {
+
+    }
+
+    @Override
+    public void showMoMovies() {
+
+    }
+
+    @Override
+    public void setLoadingInicator(boolean active) {
 
     }
 
@@ -163,6 +181,23 @@ public class MoviesFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+//                Log.e(HomeActivity.TAG, "==> onClick....Item");
+//
+//                if (itemContent == null || itemView == null) return;
+//
+//                Context context = itemView.getContext();
+//                if (context == null) return;
+//
+//                Intent intent = new Intent(context, MovieDetailActivity.class);
+//                intent.putExtra("movie", itemContent);
+//
+//                if (context instanceof Activity) {
+//                    Activity activity = (Activity) context;
+//
+//                    Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, mMovieImage, "cover").toBundle();
+//                    ActivityCompat.startActivity(activity, intent, bundle);
+//
+//            }
             }
 
             public void updateMovie(Movie movie) {

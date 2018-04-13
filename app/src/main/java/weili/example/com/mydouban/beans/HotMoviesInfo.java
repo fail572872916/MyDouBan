@@ -1,4 +1,4 @@
-package weili.example.com.mydouban.movies;
+package weili.example.com.mydouban.beans;
 
 import com.google.gson.annotations.SerializedName;
 

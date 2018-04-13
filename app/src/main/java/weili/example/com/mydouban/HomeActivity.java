@@ -24,6 +24,7 @@ import weili.example.com.mydouban.movies.MoviesFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
+    public static final String TAG = "HomeActivity";
     @BindView(R.id.tab_main)
     TabLayout tabMain;
     @BindView(R.id.vp_main)
