@@ -14,14 +14,17 @@ import weili.example.com.mydouban.beans.Movie;
  */
 public interface MoviesContranct {
 
-    interface  View extends BaseView<Presenter>{
+    interface View extends BaseView<Presenter> {
 
         void showmMovies(List<Movie> movies);
+
         void showMoMovies();
+
         void setLoadingInicator(boolean active);
     }
-    interface  Presenter extends BasePresenter{
 
-        void  loadMovies(boolean  forceupdate);
+    interface Presenter extends BasePresenter {
+
+        void loadMovies(boolean forceupdate);
     }
 }

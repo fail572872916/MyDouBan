@@ -19,8 +19,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import weili.example.com.mydouban.api.DoubanManger;
 import weili.example.com.mydouban.book.BooksFragment;
+import weili.example.com.mydouban.movies.MoviesContranct;
 import weili.example.com.mydouban.movies.MoviesFragment;
+import weili.example.com.mydouban.movies.MoviesPresenter;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -29,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
     TabLayout tabMain;
     @BindView(R.id.vp_main)
     ViewPager vpMain;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +59,15 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setUpViewPager(ViewPager vpMain) {
+        MoviesFragment   moviesFragment =MoviesFragment.newInstance();
         DouBanPagerAdapter doubanPagerAdapter = new DouBanPagerAdapter(getSupportFragmentManager());
         doubanPagerAdapter.addFragment(new MoviesFragment(), getApplicationContext().getResources().getString(R.string.tab_movies_fragment));
         doubanPagerAdapter.addFragment(new BooksFragment(), getApplicationContext().getResources().getString(R.string.tab_books_fragment));
         vpMain.setAdapter(doubanPagerAdapter);
+        createPresenter(moviesFragment);
+    }
+    private  void createPresenter(MoviesContranct.View  fragmentView){
+        new MoviesPresenter(DoubanManger.createDoubanServerce(),fragmentView);
     }
 
     static class DouBanPagerAdapter extends FragmentPagerAdapter {

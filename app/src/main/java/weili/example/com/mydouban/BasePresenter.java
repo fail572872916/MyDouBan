@@ -8,5 +8,8 @@ package weili.example.com.mydouban;
  */
 public interface BasePresenter {
 
+    /**
+     * 通知presenter工作
+     */
     void  start();
 }
