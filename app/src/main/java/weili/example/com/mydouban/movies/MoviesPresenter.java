@@ -19,107 +19,81 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @class describe
  * @time 2018-04-12 9:26
  */
-public class MoviesPresenter implements MoviesContranct.Presenter {
+public class MoviesPresenter implements MoviesContract.Presenter {
     private IDoubanService mDoubanService;
-    private   MoviesContranct.View mMoviesView;
+    private MoviesContract.View mMoviesView;
 
 
-     boolean mFirstLoad=true;
+    boolean mFirstLoad = true;
 
-    public MoviesPresenter( IDoubanService moviesService,MoviesContranct.View moviesView) {
-        mDoubanService = checkNotNull(moviesService,"IDoubanServie cannot be null!");
-        mMoviesView =checkNotNull(moviesView,"IDoubanServie cannot be null!");
+    public MoviesPresenter(IDoubanService moviesService, MoviesContract.View moviesView) {
+        mDoubanService = checkNotNull(moviesService, "IDoubanServie cannot be null!");
+        mMoviesView = checkNotNull(moviesView, "IDoubanServie cannot be null!");
         mMoviesView.setPresenter(this);
-    }
 
+    }
+    @Override
+    public void loadMovies(boolean forceUpdate) {
+
+        loadMovies(forceUpdate || mFirstLoad, true);
+
+        mFirstLoad = false;
+
+
+    }
     @Override
     public void start() {
         //MoviesFragemnt显示
 
-        loadMovies(true);
+        loadMovies(false);
+
         Log.d("MoviesPresenter", "ok?");
     }
 
     private void loadMovies(boolean forceUpdate, final boolean showLoadingUI) {
-        if (showLoadingUI) {
-            //    MovieFrgment需要显示Loading界面
-
+                 //    MovieFrgment需要显示Loading界面
+            if(showLoadingUI){
+                //MoviesFragment需要显示Loading 界面
+                mMoviesView.setLoadingIndicator(true);
+            }
+        if(forceUpdate){
             mDoubanService.searchHotMovies().enqueue(new Callback<HotMoviesInfo>() {
                 @Override
                 public void onResponse(Call<HotMoviesInfo> call, Response<HotMoviesInfo> response) {
                     List<Movie> movieList = response.body().getMovies();
                     Log.d("MoviesPresenter", "movieList.size():" + movieList.size());
                     if (showLoadingUI) {
-                        mMoviesView.setLoadingInicator(false);
+                        mMoviesView.setLoadingIndicator(false);
                     }
                     processMovives(movieList);
 
                 }
 
-                                private void processMovives(List<Movie> movieList) {
-                    if (movieList.isEmpty()) {
-                        processEmptyTasks();
-                    } else {
-                        mMoviesView.showmMovies(movieList);
-                    }
-                }
-
-                private void processEmptyTasks() {
-                    mMoviesView.showMoMovies();
-                }
 
                 @Override
                 public void onFailure(Call<HotMoviesInfo> call, Throwable t) {
                     Log.d("MoviesPresenter", t.getMessage());
                     if (showLoadingUI) {
-                        mMoviesView.setLoadingInicator(false);
+                        mMoviesView.setLoadingIndicator(false);
                     }
                 }
             });
+
+        }      }
+    private void processMovives(List<Movie> movies) {
+        if (movies.isEmpty()) {
+            processEmptyTasks();
+        } else {
+            mMoviesView.showMovies(movies);
         }
-//        if (forceUpdate) {
-//            Log.d("MoviesPresenter", "forceUpdate:" + forceUpdate);
-//            mDoubanService.searchHotMovies().enqueue(new Callback<HotMoviesInfo>() {
-//                @Override
-//                public void onResponse(Call<HotMoviesInfo> call, Response<HotMoviesInfo> response) {
-//                    List<Movie> movieList = response.body().getMovies();
-//                    Log.d("MoviesPresenter", "movieList.size():" + movieList.size());
-//                    if (showLoadingUI) {
-//                        mMoviesView.setLoadingInicator(false);
-//                    }
-//                    processMovives(movieList);
-//                }
-//
-//                private void processMovives(List<Movie> movieList) {
-//                    if (movieList.isEmpty()) {
-//                        processEmptyTasks();
-//                    } else {
-//                        mMoviesView.showmMovies(movieList);
-//                    }
-//                }
-//
-//                private void processEmptyTasks() {
-//                    mMoviesView.showMoMovies();
-//                }
-//
-//                @Override
-//                public void onFailure(Call<HotMoviesInfo> call, Throwable t) {
-//                    Log.d("MoviesPresenter", t.getMessage());
-//                    if (showLoadingUI) {
-//                        mMoviesView.setLoadingInicator(false);
-//                    }
-//                }
-//            });
-//        }
     }
 
-    @Override
-    public void loadMovies(boolean forceUpdate) {
-
-        loadMovies (forceUpdate || mFirstLoad,true);
-
-            mFirstLoad=true;
-
-
+    private void processEmptyTasks() {
+        mMoviesView.showNoMovies();
     }
+
+
+
+
+
 }
