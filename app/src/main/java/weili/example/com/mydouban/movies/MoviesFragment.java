@@ -31,6 +31,7 @@ import java.util.List;
 import weili.example.com.mydouban.HomeActivity;
 import weili.example.com.mydouban.R;
 import weili.example.com.mydouban.beans.Movie;
+import weili.example.com.mydouban.moviedetail.MovieDetailActivity;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -115,7 +116,9 @@ public class MoviesFragment extends Fragment implements MoviesContract.View {
 
         @Override
         public void setLoadingIndicator(boolean active) {
-            if(getView() == null) return;
+            if(getView() == null) {
+                return;
+            }
 
             final ProgressBar progressBar = (ProgressBar) getView().findViewById(R.id.pgb_loading);
 
@@ -218,22 +221,14 @@ public class MoviesFragment extends Fragment implements MoviesContract.View {
 
             @Override
             public void onClick(View v) {
-                Log.e(HomeActivity.TAG, "==> onClick....Item");
-
-                if (movie == null) {
-                    return;
-                }
-                if (itemView == null) {
-                    return;
-                }
+                if (movie == null) return;
+                if (itemView == null) return;
 
                 Context context = itemView.getContext();
-                if (context == null) {
-                    return;
-                }
+                if (context == null) return;
 
                 Intent intent = new Intent(context, MovieDetailActivity.class);
-                intent.putExtra("movie", (Serializable) movie);
+                intent.putExtra("movie", movie);
 
                 if (context instanceof Activity) {
                     Activity activity = (Activity) context;

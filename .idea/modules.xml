@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/IDouBan.iml" filepath="$PROJECT_DIR$/IDouBan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MyDouBan.iml" filepath="$PROJECT_DIR$/MyDouBan.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
